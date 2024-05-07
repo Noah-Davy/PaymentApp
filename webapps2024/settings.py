@@ -121,7 +121,7 @@ PASSWORD_HASHERS = [
     'django.contrib.auth.hashers.PBKDF2PasswordHasher',
 ]
 
-AXES_COOLOFF_TIME = 1  # Lockout period in hours
+AXES_COOLOFF_TIME = 0.5  # Lockout period in hours
 AXES_FAILURE_LIMIT = 3  # Number of failed attempts before lockout
 AXES_LOCKOUT_TEMPLATE = 'lockout.html'  # Template shown to locked-out users
 AXES_LOCK_OUT_BY_COMBINATION_USER_AND_IP = True
