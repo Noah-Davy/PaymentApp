@@ -38,10 +38,8 @@ def register(request):
                 user = form.save()
                 currency = form.cleaned_data['currency']
                 balance = float(1000)
-                print(currency)
-                # Currency Conversion to ensure wallet is initialised with 1000 gbp value equivalent
+                #Conversion to ensure wallet is initialised with 1000 gbp value equivalent
                 if currency == 'EUR':
-                    print('here')
                     value = convert_currency('GBP', 'EUR', balance)
                     Wallet.objects.create(user=user, balance=value, currency='EUR')
                 elif currency == 'USD':
@@ -53,7 +51,6 @@ def register(request):
                 messages.success(request, 'New Account Registered Successfully!')
                 return HttpResponseRedirect(f'/login/')
         else:
-
             form = UserForm()
 
         return render(request, 'register.html', {'form': form})

@@ -7,11 +7,10 @@ from django.contrib.auth.models import User
 from .models import Transaction, PaymentRequest
 from decimal import Decimal
 
-"""
-Validation has been added to ensure users cant send or request money from themselves, and that the user must exist for money to be requested
-"""
 
-
+"""
+Utility function that interacts with the currency conversion API, reused across payment functions below, abstracted out here to ensure modularity and to remove the complexity
+"""
 def convert_currency(from_currency, to_currency, amount):
     try:
         response = requests.get(f"https://127.0.0.1:8000/api/conversion/{from_currency}/{to_currency}/{amount}/",
@@ -31,6 +30,9 @@ f"http://127.0.0.1:8000/api/conversion/{from_currency}/{to_currency}/{amount}/"
 """
 
 
+"""
+Facilitates sending money from one user to another, error handling ensuring users can't send money to themselves and sufficent funds are available'
+"""
 @login_required
 @transaction.atomic
 def make_payment(request):
@@ -80,6 +82,9 @@ def make_payment(request):
     return redirect('home')
 
 
+"""
+Manages actions for existing payment request i.e. accept or reject payment request
+"""
 @login_required
 @transaction.atomic
 def handle_payment_request(request, request_id, action):
@@ -124,7 +129,9 @@ def handle_payment_request(request, request_id, action):
     messages.error(request, 'Invalid action.')
     return redirect('home')
 
-
+"""
+Creates a payment request from one user to another, ensuring users can't request money from themselves and sufficent funds are available
+"""
 @transaction.atomic
 @login_required
 def create_payment_request(request):
